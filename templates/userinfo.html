@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Here is your information:</h1>
+
+<form>
+    <div class="form-group row">
+        <label for="username" class="col-sm-2 col-form-label text-info">Username:</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="username" value="{{ user.username }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label text-info">Email:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control-plaintext" id="email" value="{{ user.email }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="firstname" class="col-sm-2 col-form-label text-info">First Name:</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="firstname" value="{{ user.first_name }}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="lastname" class="col-sm-2 col-form-label text-info">Last Name:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control-plaintext" id="lastname" value="{{ user.last_name }}">
+        </div>
+    </div>
+</form>
+
+<h2>Feedback:</h2>
+<div>
+    
+    {% for feed in feedback %}
+    <div class='card my-4'>
+        <div class='card-body'>
+            <h5 class='card-title text-info'>
+                {{ feed.title }}
+                {% if session['username'] == feed.username %}
+                <form style='display:inline;' action='/feedback/{{feed.id}}/update'>
+                    <button class='btn btn-sm btn-info'><i class='fas fa-edit'></i></button>
+                </form>
+                <form style='display:inline;' action='/feedback/{{feed.id}}/delete' method='POST'>
+                    <button class='btn btn-sm btn-danger'><i class='fas fa-trash'></i></button>
+                </form>
+                {% endif %}
+            </h5>
+            <p class='card-text'>
+                {{ feed.content }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<div>
+<form style='display:inline' action='/users/{{user.username}}/feedback/add'>
+    <button class='btn btn-success'>Add Feedback</button>
+</form>
+<form style='display:inline' action='/users/{{user.username}}/delete' method='POST'>
+    <button class='btn btn-danger'>Delete User</button>
+</form>
+</div>
+{% endblock %}
